@@ -3,7 +3,7 @@ Contributors: nofearinc, devrix
 Donate link: http://devwp.eu/
 Tags: posts, out of date, outdated, label, message, box, old, posts
 Requires at least: 3.4
-Tested up to: 4.0
+Tested up to: 4.6
 Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,6 +26,10 @@ Currently the plugin options are:
 * Message - the message format for the notification box
 * Enable on template - a checkbox for displaying the outdated posts in the template. Must be checked to enable the plugin functionality
 * Skin manager - a list with skins for customizing the notification
+
+== Screenshots ==
+1. DX Out of Date Settings page.
+2. Out of date message in old post.
 
 == Installation ==
 
