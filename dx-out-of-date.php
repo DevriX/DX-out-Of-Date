@@ -123,6 +123,7 @@ class DX_Out_Of_Date {
 	public function register_admin_page() {
 		add_submenu_page( 'options-general.php', __( "Out of Date", 'dxbase' ), __( "Out of Date", 'dxbase' ),
 		 'manage_options', 'dx-ood', array( $this, 'register_admin_page_callback' ) );
+		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/main.css' );
 	}
 	
 	public function register_admin_page_callback() {
@@ -171,6 +172,7 @@ class DX_Out_Of_Date {
 			$ood_skin = $ood_setting['dx_ood_skin'];
 			
 			wp_enqueue_style( 'ood-skin', plugin_dir_url( __FILE__ ) . '/css/' . $ood_skin . '.css' );
+			
 		}
 	}
 }

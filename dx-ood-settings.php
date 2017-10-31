@@ -102,7 +102,7 @@ class DX_OOD_Settings {
 			$selected = $this->ood_setting['dx_ood_duration_frame'];
 		}
 		
-		$out .= '<select name="ood_setting[dx_ood_duration_frame]">';
+		$out .= '<select name="ood_setting[dx_ood_duration_frame]" class="dx-ood-form-control">';
 		foreach ( $ood_durations as $value => $label ) {
 			$out .= sprintf( '<option value="%s" %s>%s</option>', $value, selected( $value, $selected, false ), $label );
 		}
@@ -124,7 +124,7 @@ class DX_OOD_Settings {
 			$selected = $this->ood_setting['dx_ood_period'];
 		}
 		
-		$out .= '<select name="ood_setting[dx_ood_period]">';
+		$out .= '<select name="ood_setting[dx_ood_period]" class="dx-ood-form-control" >';
 		foreach ( $ood_periods as $number ) {
 			$out .= sprintf( '<option value="%s" %s>%s</option>', $number, selected( $number, $selected, false ), $number );
 		}
@@ -146,7 +146,7 @@ class DX_OOD_Settings {
 			$selected = $this->ood_setting['dx_ood_skin'];
 		}
 	
-		$out .= '<select name="ood_setting[dx_ood_skin]">';
+		$out .= '<select name="ood_setting[dx_ood_skin]" class="dx-ood-form-control" >';
 		foreach ( $ood_skins as $skin ) {
 			$out .= sprintf( '<option value="%s" %s>%s</option>', $skin, selected( $skin, $selected, false ), $skin );
 		}
@@ -169,7 +169,7 @@ class DX_OOD_Settings {
 			$ood_message = $this->ood_setting['dx_ood_message'];
 		}
 		
-		$out .= '<textarea name="ood_setting[dx_ood_message]">';
+		$out .= '<textarea name="ood_setting[dx_ood_message]" class="dx-ood-form-control" >';
 		$out .= $ood_message;
 		$out .= '</textarea>';
 		
@@ -188,7 +188,7 @@ class DX_OOD_Settings {
 		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_enable'] ) ) {
 			$ood_checked = $this->ood_setting['dx_ood_enable'];
 		}
-		$out .= sprintf( '<input type="checkbox" name="ood_setting[dx_ood_enable]" %s />', checked( $ood_checked, 'on', false ) );
+		$out .= sprintf( '<input type="checkbox" class="dx-ood-form-control" name="ood_setting[dx_ood_enable]" %s />', checked( $ood_checked, 'on', false ) );
 	
 		echo $out;
 	}
