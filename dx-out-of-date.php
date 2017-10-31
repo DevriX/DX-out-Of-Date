@@ -96,12 +96,20 @@ class DX_Out_Of_Date {
 		$current_date = DX_OOD_Helper::get_current_date();
 		
 		$interval = DX_OOD_Helper::get_date_interval( $post_date, $current_date, $duration );
+
+		//get option to enable or disable the notification from post custom metabox
+		$dx_ood_enable_noti = get_post_meta( get_the_ID(), 'dx_ood_enable_noti', TRUE );
 		
 		// Don't filter if the post is recent.
 		if( $interval < $period ) {
 			return '';
 		}
-		
+
+		// check if the notie is disabled or emabled from post custom metabox
+		if(is_null($dx_ood_enable_noti))
+		{
+			return '';
+		}
 		// Generate the box
 		$box = '<div class="out-of-date">' . do_shortcode( $message ). '</div>';
 		

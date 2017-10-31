@@ -22,6 +22,10 @@ class DX_OOD_Settings {
 		
 		// register the checkbox
 		add_action('admin_init', array( $this, 'register_settings' ) );
+		//register the custom metabox for post
+		add_action( 'load-post.php', array( $this, 'register_cusom_post_metabox' ) );
+		add_action( 'load-post-new.php', array( $this, 'register_cusom_post_metabox' ) );
+		add_action("save_post", array( $this, 'save_custom_metabox'));
 	}
 		
 	/**
@@ -204,5 +208,48 @@ class DX_OOD_Settings {
 		// No validation occurs as everything is possible. 
 		// Message could get all flavors of HTML too, and it's admin-limited.
 		return $input;
+	}
+
+	// register custom metabox
+	public function register_cusom_post_metabox()
+	{
+		add_action( 'add_meta_boxes', array($this,'custom_metabox_settings'));
+	}
+
+	// set the settings of custom metabox
+	public function custom_metabox_settings() {
+
+	  add_meta_box(
+	    'dx_ood_enable_noti',
+	    esc_html__( 'Out of Date Notification', 'Show Notify?' ),
+	    array($this,'render_custom_metabox_show_noti'), 
+	    'post',
+	    'side',
+	    'high'
+	  );
+	}
+
+	// render the html view of custom metabox for showing noti
+	public function render_custom_metabox_show_noti()
+	{
+		$dx_ood_enable_noti = get_post_meta( get_the_ID(), 'dx_ood_enable_noti', TRUE );
+		?>
+		<p>
+			<label for="dx_ood_enable_noti">Show Notification if outdated?</label>
+			<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?= !is_null($dx_ood_enable_noti)? 'checked':''; ?> />
+		</p>
+		<?php
+	}
+
+	//save custom metabox when post is update or publish
+	public function save_custom_metabox($post_ID = 0)
+	{
+	 	$post_ID = (int) $post_ID;
+	    $post_type = get_post_type( $post_ID );
+	    $post_status = get_post_status( $post_ID );
+	    if ( "post" == $post_type && "auto-draft" != $post_status ) {
+	        update_post_meta($post_ID, "dx_ood_enable_noti", $_POST["dx_ood_enable_noti"]);
+	    }
+	    return $post_ID;
 	}
 }
