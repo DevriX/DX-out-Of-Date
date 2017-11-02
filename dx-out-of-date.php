@@ -40,6 +40,14 @@ class DX_Out_Of_Date {
 		add_action( 'template_redirect', array( $this, 'top_content_filter' ) );
 		add_action( 'init', array( $this, 'add_shortcodes' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_box_style' ) );
+
+		//register new column for the post screen
+		$ood_setting = get_option( 'ood_setting', array() );
+		if(isset($ood_setting['dx_ood_show_post_status']) && $ood_setting['dx_ood_show_post_status'] == 'on')
+		{
+			add_filter('manage_posts_columns',array($this,'render_outdated_column'));
+			add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+		}
 	}
 	
 	/**
@@ -191,6 +199,55 @@ class DX_Out_Of_Date {
 			
 		}
 	}
+
+	/**
+	 * render the new column for the post admin screen
+	 * 
+	 */
+
+	public function render_outdated_column($defaults)
+	{
+		$new_column = array();
+	   
+
+	    foreach($defaults as $key=>$value) {
+	        if($key=='date') {
+	           $new_column['ood_status'] = 'Post Outdated'; 
+	        }    
+	        $new_column[$key]=$value;
+	    }  
+
+    	return $new_column;  
+	}
+
+	public function display_post_status($column_name, $post_ID)
+	{
+		
+		
+
+		if ($column_name == 'ood_status') {
+			$ood_setting = get_option( 'ood_setting', array() );
+			// Read the options from the admin page
+			$duration = $ood_setting['dx_ood_duration_frame'];
+			$period = (int) $ood_setting['dx_ood_period'];
+
+			// Calculate the interval
+			$post_date = DX_OOD_Helper::get_post_date();
+			$current_date = DX_OOD_Helper::get_current_date();
+			
+			$interval = DX_OOD_Helper::get_date_interval( $post_date, $current_date, $duration );
+
+	        //check if the post is outdated
+			if( $interval < $period ) {
+				echo 'Yes';
+			}else
+			{
+				echo "No";
+			}
+	    }
+	}
+
+
 }
 
 // Aaand... Action!

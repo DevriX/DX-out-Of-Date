@@ -73,6 +73,14 @@ class DX_OOD_Settings {
 			'dx-ood',
 			'ood_settings_section'
 		);
+
+		add_settings_field(
+			'dx_ood_show_post_status',
+			__( "Enable the display of the status in post (add new column to the \"All Posts\" for the status)", 'ood' ),
+			array( $this, 'dx_ood_show_post_status_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
 		
 		add_settings_field(
 			'dx_ood_skin',
@@ -153,7 +161,7 @@ class DX_OOD_Settings {
 	}
 	
 	/**
-	 * The skin dropdown renderer.
+	 * The skin color picker renderer.
 	 */
 	public function dx_ood_skin_callback() {
 		$selected = '';
@@ -174,7 +182,7 @@ class DX_OOD_Settings {
 		echo $out;
 	}
 	/**
-	 * The skin dropdown renderer.
+	 * The text color picker renderer.
 	 */
 	public function dx_ood_text_color_callback() {
 		$selected = '';
@@ -260,6 +268,23 @@ class DX_OOD_Settings {
 			$ood_checked = $this->ood_setting['dx_ood_enable'];
 		}
 		$out .= sprintf( '<input type="checkbox" class="dx-ood-form-control" name="ood_setting[dx_ood_enable]" %s />', checked( $ood_checked, 'on', false ) );
+	
+		echo $out;
+	}
+
+	/**
+	 * The "Enable the display of status on view all post" checkbox renderer.
+	 */
+	public function dx_ood_show_post_status_callback() {
+		$checked = false;
+		$out = '';
+	
+		$ood_checked = apply_filters( 'dx_ood_show_post_status', $checked );
+	
+		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_show_post_status'] ) ) {
+			$ood_checked = $this->ood_setting['dx_ood_show_post_status'];
+		}
+		$out .= sprintf( '<input type="checkbox" class="dx-ood-form-control" name="ood_setting[dx_ood_show_post_status]" %s />', checked( $ood_checked, 'on', false ) );
 	
 		echo $out;
 	}
