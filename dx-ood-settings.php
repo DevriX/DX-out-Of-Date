@@ -81,6 +81,13 @@ class DX_OOD_Settings {
 			'dx-ood',
 			'ood_settings_section'
 		);
+		add_settings_field(
+			'dx_ood_text_color',
+			__( "Choose a color for the text of the message", 'ood' ),
+			array( $this, 'dx_ood_text_color_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
 
 		add_settings_field(
 			'dx_ood_position',
@@ -155,14 +162,35 @@ class DX_OOD_Settings {
 		$ood_skins = apply_filters( 'dx_ood_skins', DX_Out_Of_Date::$skins );
 	
 		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_skin'] ) ) {
-			$selected = $this->ood_setting['dx_ood_skin'];
+			$skin_color = $this->ood_setting['dx_ood_skin'];
+		}else
+		{
+			//set the default color here
+			$skin_color = '#fff';
 		}
 	
-		$out .= '<select name="ood_setting[dx_ood_skin]" class="dx-ood-form-control" >';
-		foreach ( $ood_skins as $skin ) {
-			$out .= sprintf( '<option value="%s" %s>%s</option>', $skin, selected( $skin, $selected, false ), $skin );
+		$out .= '<input name="ood_setting[dx_ood_skin]" id="dx_ood_skin" class="" value="'.$skin_color.'" />';
+	
+		echo $out;
+	}
+	/**
+	 * The skin dropdown renderer.
+	 */
+	public function dx_ood_text_color_callback() {
+		$selected = '';
+		$out = '';
+	
+		$ood_skins = apply_filters( 'dx_ood_text_color', DX_Out_Of_Date::$skins );
+	
+		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_text_color'] ) ) {
+			$text_color = $this->ood_setting['dx_ood_text_color'];
+		}else
+		{
+			//set the default color here
+			$text_color = '#000';
 		}
-		$out .= '</select>';
+	
+		$out .= '<input name="ood_setting[dx_ood_text_color]" id="dx_ood_text_color" class="" value="'.$text_color.'" />';
 	
 		echo $out;
 	}

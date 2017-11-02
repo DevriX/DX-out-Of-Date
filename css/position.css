@@ -1,3 +1,7 @@
+.out-of-date {
+	padding: 5px;
+	margin-bottom: 10px;
+}
 .top {
 	position: fixed;
 	top: 40px;

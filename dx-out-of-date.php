@@ -91,6 +91,8 @@ class DX_Out_Of_Date {
 		$period = (int) $ood_setting['dx_ood_period'];
 		$message = $ood_setting['dx_ood_message'];
 		$position = is_null($ood_setting['dx_ood_position'])? 'default':$ood_setting['dx_ood_position'];
+		$ood_skin = $ood_setting['dx_ood_skin'];
+		$ood_text_color = $ood_setting['dx_ood_text_color'];
 
 
 		// Calculate the interval
@@ -113,7 +115,7 @@ class DX_Out_Of_Date {
 			return '';
 		}
 		// Generate the box
-		$box = '<div class="out-of-date '.$position.'">' . do_shortcode( $message ). '</div>';
+		$box = '<div class="out-of-date '.$position.'" style="background-color:'.$ood_skin.';color:'.$ood_text_color.';" >' . do_shortcode( $message ). '</div>';
 		
 		return $box;
 	}
@@ -133,11 +135,15 @@ class DX_Out_Of_Date {
 	public function register_admin_page() {
 		add_submenu_page( 'options-general.php', __( "Out of Date", 'dxbase' ), __( "Out of Date", 'dxbase' ),
 		 'manage_options', 'dx-ood', array( $this, 'register_admin_page_callback' ) );
-		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/main.css' );
+
 	}
 	
 	public function register_admin_page_callback() {
+
 		include_once 'dx-ood-admin.php';
+		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/main.css' );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), false, true );
 	}
 	
 	/**
@@ -179,9 +185,7 @@ class DX_Out_Of_Date {
 				&& in_array( $ood_setting['dx_ood_skin'], self::$skins )
 				&& 'clean' !== $ood_setting['dx_ood_skin']
 				&& is_single() ) {
-			$ood_skin = $ood_setting['dx_ood_skin'];
 			
-			wp_enqueue_style( 'ood-skin', plugin_dir_url( __FILE__ ) . '/css/' . $ood_skin . '.css' );
 			//add the css for the postion of the message
 			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/css/position.css' );
 			
