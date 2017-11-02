@@ -81,6 +81,14 @@ class DX_OOD_Settings {
 			'dx-ood',
 			'ood_settings_section'
 		);
+
+		add_settings_field(
+			'dx_ood_position',
+			__( "Choose the postion of the message", 'ood' ),
+			array( $this, 'dx_ood_position_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
 	}
 	
 	public function ood_settings_callback() {
@@ -156,6 +164,37 @@ class DX_OOD_Settings {
 		}
 		$out .= '</select>';
 	
+		echo $out;
+	}
+	/**
+	 * The postion dropdown renderer. 
+	 */
+	public function dx_ood_position_callback() {
+		$selected = '';
+		$out = '';
+		
+		$ood_position = array(
+			'default' => __( 'Default', 'ood' ),
+			'top' => __( 'Top', 'ood' ),
+			'top-left' => __( 'Top Left', 'ood' ),
+			'top-right' => __( 'Top Right', 'ood' ),
+			'bottom' => __( 'Bottom', 'ood' ),
+			'bottom-left' => __( 'Bottom Left', 'ood' ),
+			'bottom-right' => __( 'Bottom Right', 'ood' ),
+		);
+		
+		$ood_position = apply_filters( 'dx_ood_position', $ood_position );
+		
+		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_position'] ) ) {
+			$selected = $this->ood_setting['dx_ood_position'];
+		}
+		
+		$out .= '<select name="ood_setting[dx_ood_position]" class="dx-ood-form-control">';
+		foreach ( $ood_position as $value => $label ) {
+			$out .= sprintf( '<option value="%s" %s>%s</option>', $value, selected( $value, $selected, false ), $label );
+		}
+		$out .= '</select>';
+
 		echo $out;
 	}
 	

@@ -90,7 +90,9 @@ class DX_Out_Of_Date {
 		$duration = $ood_setting['dx_ood_duration_frame'];
 		$period = (int) $ood_setting['dx_ood_period'];
 		$message = $ood_setting['dx_ood_message'];
-		
+		$position = is_null($ood_setting['dx_ood_position'])? 'default':$ood_setting['dx_ood_position'];
+
+
 		// Calculate the interval
 		$post_date = DX_OOD_Helper::get_post_date();
 		$current_date = DX_OOD_Helper::get_current_date();
@@ -111,7 +113,7 @@ class DX_Out_Of_Date {
 			return '';
 		}
 		// Generate the box
-		$box = '<div class="out-of-date">' . do_shortcode( $message ). '</div>';
+		$box = '<div class="out-of-date '.$position.'">' . do_shortcode( $message ). '</div>';
 		
 		return $box;
 	}
@@ -180,6 +182,8 @@ class DX_Out_Of_Date {
 			$ood_skin = $ood_setting['dx_ood_skin'];
 			
 			wp_enqueue_style( 'ood-skin', plugin_dir_url( __FILE__ ) . '/css/' . $ood_skin . '.css' );
+			//add the css for the postion of the message
+			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/css/position.css' );
 			
 		}
 	}
