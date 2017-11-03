@@ -2,3 +2,8 @@
 	width: 20%;
 	border: none;
 }
+.dx-ood-form-textarea {
+	height: 166px;
+	width: 307px;
+	resize: both;
+}

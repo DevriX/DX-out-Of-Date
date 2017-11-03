@@ -60,7 +60,7 @@ class DX_OOD_Settings {
 		
 		add_settings_field(
 			'dx_ood_message',
-			__( "Message: (use [ood_date] to place the post date in text)", 'ood' ),
+			__( "Message:", 'ood' ),
 			array( $this, 'dx_ood_message_callback' ),
 			'dx-ood',
 			'ood_settings_section'
@@ -248,9 +248,10 @@ class DX_OOD_Settings {
 			$ood_message = $this->ood_setting['dx_ood_message'];
 		}
 		
-		$out .= '<textarea name="ood_setting[dx_ood_message]" class="dx-ood-form-control" >';
+		$out .= '<textarea name="ood_setting[dx_ood_message]" class="dx-ood-form-control dx-ood-form-textarea" >';
 		$out .= $ood_message;
 		$out .= '</textarea>';
+		$out .= '<p><b>(use [ood_date] to place the post date in text)</b></p>';
 		
 		echo $out;
 	}
