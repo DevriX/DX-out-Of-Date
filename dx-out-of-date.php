@@ -239,10 +239,10 @@ class DX_Out_Of_Date {
 
 	        //check if the post is outdated
 			if( $interval < $period ) {
-				echo 'Yes';
+				echo 'No';
 			}else
 			{
-				echo "No";
+				echo "Yes";
 			}
 	    }
 	}
