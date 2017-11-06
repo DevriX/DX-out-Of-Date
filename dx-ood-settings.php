@@ -26,6 +26,7 @@ class DX_OOD_Settings {
 		add_action( 'load-post.php', array( $this, 'register_cusom_post_metabox' ) );
 		add_action( 'load-post-new.php', array( $this, 'register_cusom_post_metabox' ) );
 		add_action("save_post", array( $this, 'save_custom_metabox'));
+		add_action('quick_edit_custom_box',array( $this, 'flag_quick_edit') , 10, 2);
 	}
 		
 	/**
@@ -337,12 +338,29 @@ class DX_OOD_Settings {
 	//save custom metabox when post is update or publish
 	public function save_custom_metabox($post_ID = 0)
 	{
-	 	$post_ID = (int) $post_ID;
-	    $post_type = get_post_type( $post_ID );
-	    $post_status = get_post_status( $post_ID );
-	    if ( "post" == $post_type && "auto-draft" != $post_status ) {
-	        update_post_meta($post_ID, "dx_ood_enable_noti", $_POST["dx_ood_enable_noti"]);
-	    }
-	    return $post_ID;
+		// dont run if in quick edit
+		if(!isset($_POST['ood_status_flag']))
+		{
+		 	$post_ID = (int) $post_ID;
+		    $post_type = get_post_type( $post_ID );
+		    $post_status = get_post_status( $post_ID );
+		    if ( "post" == $post_type && "auto-draft" != $post_status ) {
+		        update_post_meta($post_ID, "dx_ood_enable_noti", $_POST["dx_ood_enable_noti"]);
+		    }
+
+		    return $post_ID;
+		}
+	    
 	}
+
+	//set the flag for quick edit
+	function flag_quick_edit( $col, $type ) {
+	    if( $col != 'ood_status' || $type != 'post' ) {
+	        return;
+	    } ?>
+	   	<input type="hidden" name="ood_status_flag" value="true" />
+	    <?php
+	}
+
+
 }
