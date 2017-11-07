@@ -43,10 +43,11 @@ class DX_Out_Of_Date {
 
 		//register new column for the post screen
 		$ood_setting = get_option( 'ood_setting', array() );
-		if(isset($ood_setting['dx_ood_show_post_status']) && $ood_setting['dx_ood_show_post_status'] == 'on')
+		add_filter('manage_posts_columns',array($this,'render_outdated_column'));
+		add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+		if(!isset($ood_setting['dx_ood_show_post_status']) && !$ood_setting['dx_ood_show_post_status'] == 'on')
 		{
-			add_filter('manage_posts_columns',array($this,'render_outdated_column'));
-			add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+			wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/custom_column.css' );
 		}
 	}
 	
