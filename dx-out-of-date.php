@@ -44,6 +44,7 @@ class DX_Out_Of_Date {
 
 		//register new column for the post screen
 		$ood_setting = get_option( 'ood_setting', array() );
+<<<<<<< HEAD
 		
 		// check if the settings is false
 		if($ood_setting)
@@ -53,6 +54,13 @@ class DX_Out_Of_Date {
 				add_filter('manage_posts_columns',array($this,'render_outdated_column'));
 				add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
 			}
+=======
+		add_filter('manage_posts_columns',array($this,'render_outdated_column'));
+		add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+		if(!isset($ood_setting['dx_ood_show_post_status']) && !$ood_setting['dx_ood_show_post_status'] == 'on')
+		{
+			wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/custom_column.css' );
+>>>>>>> 4808f4a8bd1d66968495b47eea432cea4d731507
 		}
 	}
 	
@@ -130,7 +138,7 @@ class DX_Out_Of_Date {
 		}
 		// Generate the box
 		$box = '<div class="out-of-date '.$position.'" style="background-color:'.$ood_skin.';color:'.$ood_text_color.';" >' . do_shortcode( $message ). '</div>';
-		
+			
 		return $box;
 	}
 	
@@ -200,11 +208,7 @@ class DX_Out_Of_Date {
 		$ood_setting = get_option( 'ood_setting', array() );
 
 		// Only for selected skin (non-clean) and on single page template
-		if( ! empty( $ood_setting['dx_ood_skin'] ) 
-				&& in_array( $ood_setting['dx_ood_skin'], self::$skins )
-				&& 'clean' !== $ood_setting['dx_ood_skin']
-				&& is_single() ) {
-			
+		if(is_single() ) {
 			//add the css for the postion of the message
 			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/css/position.css' );
 			
