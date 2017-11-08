@@ -1,4 +1,4 @@
-<?php
+	<?php
 /**
  * Plugin Name: DX Out of Date
  * Description: Display a notice above each post of yours that has been published a while ago and may be outdated.
@@ -40,13 +40,19 @@ class DX_Out_Of_Date {
 		add_action( 'template_redirect', array( $this, 'top_content_filter' ) );
 		add_action( 'init', array( $this, 'add_shortcodes' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_box_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style' ) );
 
 		//register new column for the post screen
 		$ood_setting = get_option( 'ood_setting', array() );
-		if(isset($ood_setting['dx_ood_show_post_status']) && $ood_setting['dx_ood_show_post_status'] == 'on')
+		
+		// check if the settings is false
+		if($ood_setting)
 		{
-			add_filter('manage_posts_columns',array($this,'render_outdated_column'));
-			add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+			if(isset($ood_setting['dx_ood_show_post_status']) && $ood_setting['dx_ood_show_post_status'] == 'on')
+			{
+				add_filter('manage_posts_columns',array($this,'render_outdated_column'));
+				add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
+			}
 		}
 	}
 	
@@ -149,6 +155,11 @@ class DX_Out_Of_Date {
 	public function register_admin_page_callback() {
 
 		include_once 'dx-ood-admin.php';
+		
+	}
+
+	public function admin_enqueue_style()
+	{
 		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/main.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), false, true );
