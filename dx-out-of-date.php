@@ -1,4 +1,4 @@
-	<?php
+<?php
 /**
  * Plugin Name: DX Out of Date
  * Description: Display a notice above each post of yours that has been published a while ago and may be outdated.
@@ -200,10 +200,7 @@ class DX_Out_Of_Date {
 		$ood_setting = get_option( 'ood_setting', array() );
 
 		// Only for selected skin (non-clean) and on single page template
-		if( ! empty( $ood_setting['dx_ood_skin'] ) 
-				&& in_array( $ood_setting['dx_ood_skin'], self::$skins )
-				&& 'clean' !== $ood_setting['dx_ood_skin']
-				&& is_single() ) {
+		if( is_single() ) {
 			
 			//add the css for the postion of the message
 			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/css/position.css' );
