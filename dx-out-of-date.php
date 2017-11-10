@@ -145,6 +145,9 @@ class DX_Out_Of_Date {
 
 	}
 	
+	/**
+	 * Admin pages render admin views
+	 */
 	public function register_admin_page_callback() {
 
 		include_once 'dx-ood-admin.php';
