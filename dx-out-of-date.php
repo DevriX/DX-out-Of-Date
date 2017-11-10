@@ -41,19 +41,12 @@ class DX_Out_Of_Date {
 		add_action( 'init', array( $this, 'add_shortcodes' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_box_style' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style' ) );
+		add_filter('manage_posts_columns',array($this,'render_outdated_column'));
+		add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
 
 		//register new column for the post screen
 		$ood_setting = get_option( 'ood_setting', array() );
-		
-		// check if the settings is false
-		if($ood_setting)
-		{
-			if(isset($ood_setting['dx_ood_show_post_status']) && $ood_setting['dx_ood_show_post_status'] == 'on')
-			{
-				add_filter('manage_posts_columns',array($this,'render_outdated_column'));
-				add_action('manage_posts_custom_column', array($this,'display_post_status'), 6, 2);
-			}
-		}
+			
 	}
 	
 	/**
@@ -163,6 +156,16 @@ class DX_Out_Of_Date {
 		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/css/main.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), false, true );
+
+		$ood_setting = get_option( 'ood_setting', array() );
+		// check if the settings is false
+		if($ood_setting)
+		{
+			if(!isset($ood_setting['dx_ood_show_post_status']) || $ood_setting['dx_ood_show_post_status'] == NULL)
+			{
+				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/css/custom_column.css' );
+			}
+		}
 	}
 	
 	/**
