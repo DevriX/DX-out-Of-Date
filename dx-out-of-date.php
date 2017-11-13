@@ -164,7 +164,7 @@ class DX_Out_Of_Date {
 		// check if the settings is false
 		if($ood_setting)
 		{
-			if(!isset($ood_setting['dx_ood_show_post_status']) || $ood_setting['dx_ood_show_post_status'] == NULL)
+			if(!isset($ood_setting['dx_ood_show_post_status']))
 			{
 				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/css/custom_column.css' );
 			}
