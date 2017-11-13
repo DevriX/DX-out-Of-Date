@@ -237,8 +237,6 @@ class DX_Out_Of_Date {
 	public function display_post_status($column_name, $post_ID)
 	{
 		
-		
-
 		if ($column_name == 'ood_status') {
 			$ood_setting = get_option( 'ood_setting', array() );
 			// Read the options from the admin page
