@@ -1,0 +1,9 @@
+#dx-ood-form .dx-ood-form-control {
+	width: 20%;
+	border: none;
+}
+#dx-ood-form .dx-ood-form-textarea {
+	height: 166px;
+	width: 307px;
+	resize: both;
+}
