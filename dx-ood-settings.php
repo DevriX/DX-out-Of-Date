@@ -219,12 +219,12 @@ class DX_OOD_Settings
         
         $ood_position = array(
             'default' => __('Default', 'ood'),
-            'top' => __('Top', 'ood'),
-            'top-left' => __('Top Left', 'ood'),
-            'top-right' => __('Top Right', 'ood'),
-            'bottom' => __('Bottom', 'ood'),
-            'bottom-left' => __('Bottom Left', 'ood'),
-            'bottom-right' => __('Bottom Right', 'ood'),
+            'dx-ood-top' => __('Top', 'ood'),
+            'dx-ood-top-left' => __('Top Left', 'ood'),
+            'dx-ood-top-right' => __('Top Right', 'ood'),
+            'dx-ood-bottom' => __('Bottom', 'ood'),
+            'dx-ood-bottom-left' => __('Bottom Left', 'ood'),
+            'dx-ood-bottom-right' => __('Bottom Right', 'ood'),
         );
         
         $ood_position = apply_filters('dx_ood_position', $ood_position);
