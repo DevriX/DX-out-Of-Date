@@ -169,14 +169,14 @@ class DX_Out_Of_Date
 
 	public function admin_enqueue_style()
 	{
-		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/assets/css/main.css' );
+		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/assets/css/main.css', array(), true );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/assets/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), false, true );
+		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/assets/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), true, true );
 		$ood_setting = get_option( 'ood_setting', array() );
 		// check if the settings is false
 		if ( $ood_setting ) {
 			if ( !isset( $ood_setting[ 'dx_ood_show_post_status' ] ) ) {
-				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/assets/css/custom_column.css' );
+				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/assets/css/custom_column.css', array(), true );
 			}
 		}
 	}
@@ -220,7 +220,7 @@ class DX_Out_Of_Date
 		// Only for selected skin (non-clean) and on single page template
 		if ( is_single() ) {
 			//add the css for the postion of the message
-			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css' );
+			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css', array(), true );
 		}
 	}
 
