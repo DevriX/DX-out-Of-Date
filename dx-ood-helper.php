@@ -52,16 +52,16 @@ class DX_OOD_Helper {
 		$diff = 0;
 
 		switch( $duration_frame ) {
-			case 'days':
+			case 'days' :
 				// We use the days field, otherwise days reset after 31
 				$diff = $interval->days;
 				break;
-			case 'months':
+			case 'months' :
 				// A bit tricky - months reset after a year and we need to compare years
 				$years = ( int ) $interval->format( '%y' );
 				$diff = 12 * $years + ( int ) $interval->format( '%m' );
 				break;
-			case 'years':
+			case 'years' :
 				$diff = $interval->format( '%y' );
 				break;
 		}

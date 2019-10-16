@@ -3,6 +3,7 @@
  * Plugin Name: DX Out of Date
  * Description: Display a notice above each post of yours that has been published a while ago and may be outdated.
  * Author: nofearinc
+ * Text Domain: dx-out-of-date
  * Author URI: http://devwp.eu/
  * Version: 0.3
  * License: GPLv2 or later
@@ -17,8 +18,7 @@ include_once 'dx-ood-helper.php';
  * @author nofearinc
  *
  */
-class DX_Out_Of_Date
-{
+class DX_Out_Of_Date {
 	
 	/**
 	 *
@@ -33,8 +33,7 @@ class DX_Out_Of_Date
 			'blue'
 	);
 	
-	public function __construct()
-	{
+	public function __construct() {
 		add_action('admin_init', array( $this, 'register_settings' ), 3 );
 		
 		// register admin pages for the plugin
@@ -45,6 +44,7 @@ class DX_Out_Of_Date
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style' ) );
 		add_filter( 'manage_posts_columns', array( $this,'render_outdated_column' ) );
 		add_action( 'manage_posts_custom_column', array( $this,'display_post_status' ), 6, 2 );
+		add_filter( 'the_content', array( $this, 'top_content_filter_callback' ) );
 
 		//register new column for the post screen
 		$ood_setting= get_option( 'ood_setting', array() );
@@ -55,8 +55,7 @@ class DX_Out_Of_Date
 	 *
 	 * Visible only if the checkbox in the admin has been clicked.
 	 */
-	public function top_content_filter()
-	{
+	public function top_content_filter() {
 		$ood_setting = get_option( 'ood_setting', array() );
 		
 		if ( ! empty( $ood_setting[ 'dx_ood_enable' ] ) && is_single() ) {
@@ -72,8 +71,7 @@ class DX_Out_Of_Date
 	 * @param string $content the original post content
 	 * @return string the altered content entry with the box
 	 */
-	public function top_content_filter_callback( $content )
-	{
+	public function top_content_filter_callback( $content ) {
 		$box = $this->outdated_box_generator();
 		
 		if( $box[ 1 ] == 'bottom' ) {
@@ -89,8 +87,7 @@ class DX_Out_Of_Date
 	 *
 	 * @return string box markup or empty string if irrelevant.
 	 */
-	public static function outdated_box_generator()
-	{
+	public static function outdated_box_generator() {
 		$ood_setting = get_option( 'ood_setting', array() );
 		
 		// If no options are set, bail
@@ -104,7 +101,7 @@ class DX_Out_Of_Date
 		$duration = $ood_setting[ 'dx_ood_duration_frame' ];
 		$period = ( int ) $ood_setting[ 'dx_ood_period' ];
 		$message = $ood_setting[ 'dx_ood_message' ];
-		$position = is_null( $ood_setting[ 'dx_ood_position' ] )? 'default':$ood_setting[ 'dx_ood_position' ];
+		$position = is_null( $ood_setting[ 'dx_ood_position' ] )? 'default' : $ood_setting[ 'dx_ood_position' ];
 		$ood_skin = $ood_setting[ 'dx_ood_skin' ];
 		$ood_text_color = $ood_setting['dx_ood_text_color' ];
 
@@ -119,12 +116,12 @@ class DX_Out_Of_Date
 		$dx_ood_enable_noti = get_post_meta(get_the_ID(), 'dx_ood_enable_noti', true);
 		
 		// Don't filter if the post is recent.
-		if ($interval < $period) {
+		if ( $interval < $period ) {
 			return '';
 		}
 
 		// check if the notie is disabled or emabled from post custom metabox
-		if (is_null($dx_ood_enable_noti)) {
+		if ( is_null( $dx_ood_enable_noti ) ) {
 			return '';
 		}
 		
@@ -137,8 +134,7 @@ class DX_Out_Of_Date
 	/**
 	 * Register the settings page
 	 */
-	public function register_settings()
-	{
+	public function register_settings() {
 		include_once 'dx-ood-settings.php';
 
 		new DX_OOD_Settings();
@@ -147,14 +143,13 @@ class DX_Out_Of_Date
 	/**
 	 * Admin pages
 	 */
-	public function register_admin_page()
-	{
+	public function register_admin_page() {
 		add_submenu_page(
 			'options-general.php',
-			__( "Out of Date", 'dxbase' ),
-			__( "Out of Date", 'dxbase' ),
+			__( "Out of Date", 'dx-out-of-date' ),
+			__( "Out of Date", 'dx-out-of-date' ),
 			'manage_options',
-			'dx-ood',
+			'dx-out-of-date',
 			array( $this, 'register_admin_page_callback' )
 		);
 	}
@@ -162,21 +157,23 @@ class DX_Out_Of_Date
 	/**
 	 * Admin pages render admin views
 	 */
-	public function register_admin_page_callback()
-	{
+	public function register_admin_page_callback() {
 		include_once 'dx-ood-admin.php';
 	}
 
-	public function admin_enqueue_style()
-	{
-		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/assets/css/main.css' );
+	public function admin_enqueue_style() {	
+		$menu_css_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/css/main.css' ) );
+		$colorpicker_js_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/js/dx-ood-colorpicker.js' ) );
+		$custom_column_css_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/css/custom_column.css' ) );
+
+		wp_enqueue_style( 'ood-main', plugin_dir_url( __FILE__ ) . '/assets/css/main.css', array(),$menu_css_ver );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/assets/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), false, true );
+		wp_enqueue_script( 'dx-ood-script-colorpicker', plugin_dir_url( __FILE__ ) . '/assets/js/dx-ood-colorpicker.js', array( 'wp-color-picker' ), array(), $colorpicker_js_ver );
 		$ood_setting = get_option( 'ood_setting', array() );
 		// check if the settings is false
 		if ( $ood_setting ) {
 			if ( !isset( $ood_setting[ 'dx_ood_show_post_status' ] ) ) {
-				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/assets/css/custom_column.css' );
+				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/assets/css/custom_column.css', array(), $custom_column_css_ver );
 			}
 		}
 	}
@@ -184,8 +181,7 @@ class DX_Out_Of_Date
 	/**
 	 * Shortcodes
 	 */
-	public function add_shortcodes()
-	{
+	public function add_shortcodes() {
 		add_shortcode( 'ood_date', array( $this, 'ood_date_shortcode' ) );
 		add_shortcode( 'out_of_date', array( $this, 'ood_core_shortcode' ) );
 	}
@@ -195,8 +191,7 @@ class DX_Out_Of_Date
 	 *
 	 * @return string the post date
 	 */
-	public function ood_date_shortcode( $atts, $content ) 
-	{
+	public function ood_date_shortcode( $atts, $content ) {
 		return get_the_date();
 	}
 	
@@ -205,8 +200,7 @@ class DX_Out_Of_Date
 	 *
 	 * @return string the box HTML
 	 */
-	public function ood_core_shortcode( $atts, $content = '' )
-	{
+	public function ood_core_shortcode( $atts, $content = '' ) {
 		return $this->outdated_box_generator();
 	}
 	
@@ -215,12 +209,12 @@ class DX_Out_Of_Date
 	 *
 	 * Ignore the clean skin which doesn't set any styles.
 	 */
-	public function enqueue_box_style()
-	{
+	public function enqueue_box_style() {
 		// Only for selected skin (non-clean) and on single page template
 		if ( is_single() ) {
 			//add the css for the postion of the message
-			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css' );
+			$position_column_css_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/css/position.css' ) );
+			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css', array(),$position_column_css_ver  );
 		}
 	}
 
@@ -229,13 +223,12 @@ class DX_Out_Of_Date
 	 *
 	 */
 
-	public function render_outdated_column( $defaults )
-	{
+	public function render_outdated_column( $defaults )	{
 		$new_column = array();
 	   
 
 		foreach ( $defaults as $key => $value ) {
-			if ( $key=='date' ) {
+			if ( $key == 'date' ) {
 				$new_column[ 'ood_status' ] = 'Post Outdated';
 			}
 			$new_column[ $key ]=$value;
@@ -244,8 +237,7 @@ class DX_Out_Of_Date
 		return $new_column;
 	}
 
-	public function display_post_status( $column_name, $post_ID )
-	{
+	public function display_post_status( $column_name, $post_ID ) {
 		
 		if ( $column_name == 'ood_status' ) {
 			$ood_setting = get_option( 'ood_setting', array() );
