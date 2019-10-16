@@ -317,16 +317,16 @@ class DX_OOD_Settings {
 		add_meta_box(
 			'dx_ood_enable_noti',
 			esc_html__( 'Out of Date Notification', 'Show Notify?' ),
-			array( $this,'render_custom_metabox_show_noti' ),
+			array( $this,'render_custom_metabox_option' ),
 			'post',
 			'side',
 			'high'
 		);
 	}
 	 /**
-	 * render the html view of custom metabox for showing noti
+	 * render the html view of custom metabox for post to enable or disable out of date massage   
 	 */
-	public function render_custom_metabox_show_noti() {
+	public function render_custom_metabox_option() {
 		$dx_ood_enable_noti = get_post_meta( get_the_ID(), 'dx_ood_enable_noti', true );
 		?>
 			<p>
