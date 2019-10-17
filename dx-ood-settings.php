@@ -18,7 +18,7 @@ class DX_OOD_Settings {
 	 * Construct me
 	 */
 	public function __construct() {
-		$this->ood_setting = get_option( 'ood_setting', array() );
+		$this->ood_setting = get_option( 'ood_setting', array() );    
 		
 		// register the checkbox
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
@@ -175,10 +175,10 @@ class DX_OOD_Settings {
 			$skin_color = $this->ood_setting[ 'dx_ood_skin' ];
 		} else {
 			//set the default color here
-			$skin_color = '#fff';
+			$skin_color = ' #fff';
 		}
 	
-		$out .= '<input name="ood_setting[dx_ood_skin]" id="dx_ood_skin" class="" value="'. $skin_color .'" />';
+		$out .= '<input name="ood_setting[dx_ood_skin]" id="dx_ood_skin" class="" value="' . $skin_color . '" />';
 	
 		echo $out;
 	}
@@ -198,7 +198,7 @@ class DX_OOD_Settings {
 			$text_color = '#000';
 		}
 	
-		$out .= '<input name="ood_setting[dx_ood_text_color]" id="dx_ood_text_color" class="" value="'.$text_color.'" />';
+		$out .= '<input name="ood_setting[dx_ood_text_color]" id="dx_ood_text_color" class="" value="' . $text_color . '" />';
 	
 		echo $out;
 	}
@@ -331,7 +331,7 @@ class DX_OOD_Settings {
 		?>
 			<p>
 				<label for="dx_ood_enable_noti">Show Notification if outdated?</label>
-				<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?= !is_null( $dx_ood_enable_noti )? 'checked' : ''; ?> />
+				<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?php echo !is_null( $dx_ood_enable_noti ) ? 'checked' : ''; ?> />
 			</p>
 		<?php
 	}

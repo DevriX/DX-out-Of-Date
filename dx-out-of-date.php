@@ -101,7 +101,7 @@ class DX_Out_Of_Date {
 		$duration = $ood_setting[ 'dx_ood_duration_frame' ];
 		$period = ( int ) $ood_setting[ 'dx_ood_period' ];
 		$message = $ood_setting[ 'dx_ood_message' ];
-		$position = is_null( $ood_setting[ 'dx_ood_position' ] )? 'default' : $ood_setting[ 'dx_ood_position' ];
+		$position = is_null( $ood_setting[ 'dx_ood_position' ] ) ? 'default' : $ood_setting[ 'dx_ood_position' ];
 		$ood_skin = $ood_setting[ 'dx_ood_skin' ];
 		$ood_text_color = $ood_setting['dx_ood_text_color' ];
 
@@ -110,10 +110,10 @@ class DX_Out_Of_Date {
 		$post_date = DX_OOD_Helper::get_post_date();
 		$current_date = DX_OOD_Helper::get_current_date();
 		
-		$interval = DX_OOD_Helper::get_date_interval($post_date, $current_date, $duration);
+		$interval = DX_OOD_Helper::get_date_interval( $post_date, $current_date, $duration );
 
 		//get option to enable or disable the notification from post custom metabox
-		$dx_ood_enable_noti = get_post_meta(get_the_ID(), 'dx_ood_enable_noti', true);
+		$dx_ood_enable_noti = get_post_meta( get_the_ID(), 'dx_ood_enable_noti', true );
 		
 		// Don't filter if the post is recent.
 		if ( $interval < $period ) {
@@ -126,7 +126,7 @@ class DX_Out_Of_Date {
 		}
 		
 		// Generate the box
-		$box = '<div class="out-of-date" style="background-color:'.$ood_skin.';color:'.$ood_text_color.';" >' . do_shortcode( $message ). '</div>';
+		$box = '<div class="out-of-date" style="background-color:' . $ood_skin . ';color:' . $ood_text_color . ';" >' . do_shortcode( $message ) . '</div>';
 		
 		return array( $box, $position );
 	}
@@ -172,7 +172,7 @@ class DX_Out_Of_Date {
 		$ood_setting = get_option( 'ood_setting', array() );
 		// check if the settings is false
 		if ( $ood_setting ) {
-			if ( !isset( $ood_setting[ 'dx_ood_show_post_status' ] ) ) {
+			if ( ! isset( $ood_setting[ 'dx_ood_show_post_status' ] ) ) {
 				wp_enqueue_style( 'ood-hide-column', plugin_dir_url( __FILE__ ) . '/assets/css/custom_column.css', array(), $custom_column_css_ver );
 			}
 		}
@@ -214,7 +214,7 @@ class DX_Out_Of_Date {
 		if ( is_single() ) {
 			//add the css for the postion of the message
 			$position_column_css_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/css/position.css' ) );
-			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css', array(),$position_column_css_ver  );
+			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css', array(), $position_column_css_ver );
 		}
 	}
 
