@@ -212,11 +212,8 @@ class DX_OOD_Settings {
 		$ood_position = array(
 			'default' 		=> __( 'Default', 'dx-out-of-date' ),
 			'top' 	 		=> __( 'Top', 'dx-out-of-date' ),
-			'top-left' 		=> __( 'Top Left', 'dx-out-of-date' ),
-			'top-right' 	=> __( 'Top Right', 'dx-out-of-date' ),
 			'bottom' 		=> __( 'Bottom', 'dx-out-of-date' ),
-			'bottom-left' 	=> __( 'Bottom Left', 'dx-out-of-date' ),
-			'bottom-right' 	=> __( 'Bottom Right', 'dx-out-of-date' ),
+
 		);
 		
 		$ood_position = apply_filters( 'dx_ood_position', $ood_position );
