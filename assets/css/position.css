@@ -1,0 +1,42 @@
+.out-of-date {
+	padding: 5px;
+	margin-bottom: 10px;
+}
+.top {
+	position: absolute;
+	top: 40px;
+	margin-left: calc(0.50*100%);
+	left: -25%;
+	z-index: 2;
+}	
+.top-left {
+	position: absolute;
+	top: 40px;
+	left: 0;
+	z-index: 2;
+}
+.top-right {
+	position: absolute;
+	top: 40px;
+	right: 0;
+	z-index: 2;
+}
+.bottom {
+	position: absolute;
+	bottom: 60px;
+	z-index: 2;
+	margin-left: calc(0.50*100%);
+	left: -25%;
+}
+.bottom-left {
+	position: absolute;
+	bottom: 60px;
+	left: 0;
+	z-index: 2;
+}
+.bottom-right {
+	position: absolute;
+	bottom: 60px;
+	right: 0;
+	z-index: 2;
+}

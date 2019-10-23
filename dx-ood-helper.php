@@ -18,7 +18,7 @@ class DX_OOD_Helper {
 	 * @return DateTime date object
 	 */
 	public static function get_post_date() {
-		$post_date = get_the_date('Y-m-d');
+		$post_date = get_the_date( 'Y-m-d' );
 		
 		$date = new DateTime( $post_date );
 		
@@ -58,14 +58,14 @@ class DX_OOD_Helper {
 				break;
 			case 'months':
 				// A bit tricky - months reset after a year and we need to compare years
-				$years = (int) $interval->format('%y');
-				$diff = 12 * $years + (int) $interval->format('%m');
+				$years = ( int ) $interval->format( '%y' );
+				$diff = 12 * $years + ( int ) $interval->format( '%m' );
 				break;
 			case 'years':
-				$diff = $interval->format('%y');
+				$diff = $interval->format( '%y' );
 				break;
 		}
 		
-		return (int) $diff;
+		return ( int ) $diff;
 	}
 }

@@ -2,14 +2,14 @@
 
 /**
  * The Settings API wrapper class, managing all the things.
- * 
+ *
  * @author nofearinc
  *
  */
 class DX_OOD_Settings {
 	
 	/**
-	 * 
+	 *
 	 * @var array ood_setting an array with all the options
 	 */
 	private $ood_setting;
@@ -18,29 +18,34 @@ class DX_OOD_Settings {
 	 * Construct me
 	 */
 	public function __construct() {
-		$this->ood_setting = get_option( 'ood_setting', array() );
+		$this->ood_setting = get_option( 'ood_setting', array() );    
 		
 		// register the checkbox
-		add_action('admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		//register the custom metabox for post
+		add_action( 'load-post.php', array( $this, 'register_cusom_post_metabox' ) );
+		add_action( 'load-post-new.php', array( $this, 'register_cusom_post_metabox' ) );
+		add_action( 'save_post', array( $this, 'save_custom_metabox' ) );
+		add_action( 'quick_edit_custom_box', array( $this, 'flag_quick_edit' ), 10, 2 ) ;
 	}
 		
 	/**
 	 * Register the setting, section and fields
-	 * 
+	 *
 	 */
 	public function register_settings() {
 		register_setting( 'ood_setting', 'ood_setting', array( $this, 'dx_validate_settings' ) );
 
 		add_settings_section(
 			'ood_settings_section',
-			__( "Out of Date admin panel", 'ood' ),
-			array($this, 'ood_settings_callback'),
+			__( "Out of Date admin panel", 'dx-out-of-date' ),
+			array( $this, 'ood_settings_callback' ),
 			'dx-ood'
 		);
 	
 		add_settings_field(
 			'dx_ood_duration_frame',
-			__( "Duration: ", 'ood' ),
+			__( "Duration: ", 'dx-out-of-date' ),
 			array( $this, 'dx_ood_duration_callback' ),
 			'dx-ood',
 			'ood_settings_section'
@@ -48,7 +53,7 @@ class DX_OOD_Settings {
 		
 		add_settings_field(
 			'dx_ood_period',
-			__( "Period: ", 'ood' ),
+			__( "Period: ", 'dx-out-of-date' ),
 			array( $this, 'dx_ood_period_callback' ),
 			'dx-ood',
 			'ood_settings_section'
@@ -56,7 +61,7 @@ class DX_OOD_Settings {
 		
 		add_settings_field(
 			'dx_ood_message',
-			__( "Message: (use [ood_date] to place the post date in text)", 'ood' ),
+			__( "Message:", 'dx-out-of-date' ),
 			array( $this, 'dx_ood_message_callback' ),
 			'dx-ood',
 			'ood_settings_section'
@@ -64,16 +69,39 @@ class DX_OOD_Settings {
 		
 		add_settings_field(
 			'dx_ood_enable',
-			__( "Enable the message by default on all outdated posts (display the box in the template)", 'ood' ),
+			__( "Enable the message by default on all outdated posts (display the box in the template)", 'dx-out-of-date' ),
 			array( $this, 'dx_ood_enable_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
+
+		add_settings_field(
+			'dx_ood_show_post_status',
+			__( "Enable the display of the status in post (add new column to the \"All Posts\" for the status)", 'dx-out-of-date' ),
+			array( $this, 'dx_ood_show_post_status_callback' ),
 			'dx-ood',
 			'ood_settings_section'
 		);
 		
 		add_settings_field(
 			'dx_ood_skin',
-			__( "Choose a skin for your template", 'ood' ),
+			__( "Choose a skin for your template", 'dx-out-of-date' ),
 			array( $this, 'dx_ood_skin_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
+		add_settings_field(
+			'dx_ood_text_color',
+			__( "Choose a color for the text of the message", 'dx-out-of-date' ),
+			array( $this, 'dx_ood_text_color_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
+
+		add_settings_field(
+			'dx_ood_position',
+			__( "Choose the postion of the message", 'dx-out-of-date' ),
+			array( $this, 'dx_ood_position_callback' ),
 			'dx-ood',
 			'ood_settings_section'
 		);
@@ -91,18 +119,18 @@ class DX_OOD_Settings {
 		$out = '';
 		
 		$ood_durations = array(
-			'years' => __( 'Years', 'ood' ),
-			'months' => __( 'Months', 'ood' ),
-			'days' => __( 'Days', 'ood' ),
+			'years' 	=> __( 'Years', 'dx-out-of-date' ),
+			'months' 	=> __( 'Months', 'dx-out-of-date' ),
+			'days' 		=> __( 'Days', 'dx-out-of-date' ),
 		);
 		
 		$ood_durations = apply_filters( 'dx_ood_durations', $ood_durations );
 		
-		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_duration_frame'] ) ) {
-			$selected = $this->ood_setting['dx_ood_duration_frame'];
+		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting[ 'dx_ood_duration_frame' ] ) ) {
+			$selected = $this->ood_setting[ 'dx_ood_duration_frame' ];
 		}
 		
-		$out .= '<select name="ood_setting[dx_ood_duration_frame]">';
+		$out .= '<select name="ood_setting[dx_ood_duration_frame]" class="dx-ood-form-control">';
 		foreach ( $ood_durations as $value => $label ) {
 			$out .= sprintf( '<option value="%s" %s>%s</option>', $value, selected( $value, $selected, false ), $label );
 		}
@@ -112,7 +140,7 @@ class DX_OOD_Settings {
 	}
 	
 	/**
-	 * The period dropdown renderer. 
+	 * The period dropdown renderer.
 	 */
 	public function dx_ood_period_callback() {
 		$selected = '';
@@ -120,11 +148,11 @@ class DX_OOD_Settings {
 		
 		$ood_periods = apply_filters( 'dx_ood_periods', range( 1, 40 ) );
 		
-		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_period'] ) ) {
-			$selected = $this->ood_setting['dx_ood_period'];
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_period' ] ) ) {
+			$selected = $this->ood_setting[ 'dx_ood_period' ];
 		}
 		
-		$out .= '<select name="ood_setting[dx_ood_period]">';
+		$out .= '<select name="ood_setting[dx_ood_period]" class="dx-ood-form-control" >';
 		foreach ( $ood_periods as $number ) {
 			$out .= sprintf( '<option value="%s" %s>%s</option>', $number, selected( $number, $selected, false ), $number );
 		}
@@ -134,29 +162,80 @@ class DX_OOD_Settings {
 	}
 	
 	/**
-	 * The skin dropdown renderer.
+	 * The skin color picker renderer.
 	 */
-	public function dx_ood_skin_callback() {
+	public function dx_ood_skin_callback()
+	{
 		$selected = '';
 		$out = '';
 	
-		$ood_skins = apply_filters( 'dx_ood_skins', DX_Out_Of_Date::$skins );
+		$ood_skins = apply_filters( 'dx_ood_skins', DX_Out_Of_Date::$skins ) ;
 	
-		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_skin'] ) ) {
-			$selected = $this->ood_setting['dx_ood_skin'];
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_skin' ] ) ) {
+			$skin_color = $this->ood_setting[ 'dx_ood_skin' ];
+		} else {
+			//set the default color here
+			$skin_color = ' #fff';
 		}
 	
-		$out .= '<select name="ood_setting[dx_ood_skin]">';
-		foreach ( $ood_skins as $skin ) {
-			$out .= sprintf( '<option value="%s" %s>%s</option>', $skin, selected( $skin, $selected, false ), $skin );
+		$out .= '<input name="ood_setting[dx_ood_skin]" id="dx_ood_skin" class="" value="' . $skin_color . '" />';
+	
+		echo $out;
+	}
+	/**
+	 * The text color picker renderer.
+	 */
+	public function dx_ood_text_color_callback() {
+		$selected = '';
+		$out = '';
+	
+		$ood_skins = apply_filters( 'dx_ood_text_color', DX_Out_Of_Date::$skins );
+	
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_text_color' ] ) ) {
+			$text_color = $this->ood_setting[ 'dx_ood_text_color' ];
+		} else {
+			//set the default color here
+			$text_color = '#000';
+		}
+	
+		$out .= '<input name="ood_setting[dx_ood_text_color]" id="dx_ood_text_color" class="" value="' . $text_color . '" />';
+	
+		echo $out;
+	}
+	/**
+	 * The postion dropdown renderer.
+	 */
+	public function dx_ood_position_callback() {
+		$selected = '';
+		$out = '';
+		
+		$ood_position = array(
+			'default' 		=> __( 'Default', 'dx-out-of-date' ),
+			'top' 	 		=> __( 'Top', 'dx-out-of-date' ),
+			'top-left' 		=> __( 'Top Left', 'dx-out-of-date' ),
+			'top-right' 	=> __( 'Top Right', 'dx-out-of-date' ),
+			'bottom' 		=> __( 'Bottom', 'dx-out-of-date' ),
+			'bottom-left' 	=> __( 'Bottom Left', 'dx-out-of-date' ),
+			'bottom-right' 	=> __( 'Bottom Right', 'dx-out-of-date' ),
+		);
+		
+		$ood_position = apply_filters( 'dx_ood_position', $ood_position );
+		
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting [ 'dx_ood_position' ] ) ) {
+			$selected = $this->ood_setting[ 'dx_ood_position' ];
+		}
+		
+		$out .= '<select name="ood_setting[dx_ood_position]" class="dx-ood-form-control">';
+		foreach ( $ood_position as $value => $label ) {
+			$out .= sprintf( '<option value="%s" %s>%s</option>', $value, selected( $value, $selected, false ), $label );
 		}
 		$out .= '</select>';
-	
+
 		echo $out;
 	}
 	
 	/**
-	 * The message callback renderer. 
+	 * The message callback renderer.
 	 */
 	public function dx_ood_message_callback() {
 		$old_value = 'This entry has been published on [ood_date] and may be out of date.';
@@ -165,13 +244,14 @@ class DX_OOD_Settings {
 		// Allows for setting default messages
 		$ood_message = apply_filters( 'dx_ood_message', $old_value );
 		
-		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_message'] ) ) {
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_message' ] ) ) {
 			$ood_message = $this->ood_setting['dx_ood_message'];
 		}
 		
-		$out .= '<textarea name="ood_setting[dx_ood_message]">';
+		$out .= '<textarea name="ood_setting[dx_ood_message]" class="dx-ood-form-control dx-ood-form-textarea" >';
 		$out .= $ood_message;
 		$out .= '</textarea>';
+		$out .= '<p><b>(use [ood_date] to place the post date in text)</b></p>';
 		
 		echo $out;
 	}
@@ -185,24 +265,100 @@ class DX_OOD_Settings {
 	
 		$ood_checked = apply_filters( 'dx_ood_enable', $checked );
 	
-		if ( ! empty( $this->ood_setting ) && isset ( $this->ood_setting['dx_ood_enable'] ) ) {
-			$ood_checked = $this->ood_setting['dx_ood_enable'];
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_enable' ] ) ) {
+			$ood_checked = $this->ood_setting[ 'dx_ood_enable' ];
 		}
-		$out .= sprintf( '<input type="checkbox" name="ood_setting[dx_ood_enable]" %s />', checked( $ood_checked, 'on', false ) );
+		$out .= sprintf( '<input type="checkbox" class="dx-ood-form-control" name="ood_setting[dx_ood_enable]" %s />', checked( $ood_checked, 'on', false ) );
+	
+		echo $out;
+	}
+
+	/**
+	 * The "Enable the display of status on view all post" checkbox renderer.
+	 */
+	public function dx_ood_show_post_status_callback() {
+		$checked = false;
+		$out = '';
+	
+		$ood_checked = apply_filters( 'dx_ood_show_post_status', $checked );
+	
+		if ( ! empty( $this->ood_setting ) && isset( $this->ood_setting[ 'dx_ood_show_post_status' ] ) ) {
+			$ood_checked = $this->ood_setting[ 'dx_ood_show_post_status' ];
+		}
+		$out .= sprintf( '<input type="checkbox" class="dx-ood-form-control" name="ood_setting[dx_ood_show_post_status]" %s />', checked( $ood_checked, 'on', false ) );
 	
 		echo $out;
 	}
 	
 	/**
 	 * Validate Settings
-	 * 
+	 *
 	 * Filter the submitted data as per your request and return the array
-	 * 
+	 *
 	 * @param array $input
 	 */
 	public function dx_validate_settings( $input ) {
-		// No validation occurs as everything is possible. 
+		// No validation occurs as everything is possible.
 		// Message could get all flavors of HTML too, and it's admin-limited.
 		return $input;
+	}
+
+	/**
+	 * register custom metabox
+	 */
+	public function register_cusom_post_metabox() {
+		add_action( 'add_meta_boxes', array( $this, 'custom_metabox_settings' ) );
+	}
+
+	/**
+	 * set the settings of custom metabox
+	 */
+	public function custom_metabox_settings() {
+		add_meta_box(
+			'dx_ood_enable_noti',
+			esc_html__( 'Out of Date Notification', 'Show Notify?' ),
+			array( $this,'render_custom_metabox_option' ),
+			'post',
+			'side',
+			'high'
+		);
+	}
+	 /**
+	 * render the html view of custom metabox for post to enable or disable out of date massage   
+	 */
+	public function render_custom_metabox_option() {
+		$dx_ood_enable_noti = get_post_meta( get_the_ID(), 'dx_ood_enable_noti', true );
+		?>
+			<p>
+				<label for="dx_ood_enable_noti">Show Notification if outdated?</label>
+				<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?php echo !is_null( $dx_ood_enable_noti ) ? 'checked' : ''; ?> />
+			</p>
+		<?php
+	}
+	/**
+	* save custom metabox when post is update or publish
+	*/
+	public function save_custom_metabox( $post_ID = 0 )	{
+		// dont run if in quick edit
+		if ( !isset( $_POST[ 'ood_status_flag' ] ) ) {
+			$post_ID = ( int ) $post_ID;
+			$post_type = get_post_type( $post_ID );
+			$post_status = get_post_status( $post_ID );
+			if ( "post" == $post_type && "auto-draft" != $post_status ) {
+				update_post_meta( $post_ID, "dx_ood_enable_noti", $_POST[ "dx_ood_enable_noti" ] );
+			}
+
+			return $post_ID;
+		}
+	}
+	/**
+	* set the flag for quick edit
+	*/
+	function flag_quick_edit( $col, $type ) {
+		if ( $col != 'ood_status' || $type != 'post' ) {
+			return;
+		} ?>
+		<input type="hidden" name="ood_status_flag" value="true" />
+		<?php
 	}
 }
