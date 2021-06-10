@@ -1,10 +1,10 @@
 === DX Out of Date ===
 Contributors: nofearinc, devrix
-Donate link: http://devwp.eu/
 Tags: posts, out of date, outdated, label, message, box, old, posts
-Requires at least: 3.4
-Tested up to: 4.7
-Stable tag: 0.3
+Requires at least: 4.7
+Tested up to: 5.2.3
+Stable tag: 1.0
+Requires PHP: 7.1 or higher
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,9 +70,17 @@ with his custom approach for marking tutorials as outdated.
 
 == Changelog ==
 
+= 1.0 =
+* Added new section - Enable the display of the status in post 
+* Refactor section - Choose a skin for your template
+* Added new section - Choose the position of the message
+
 = 0.3 =
 * First stable plugin version
 * Admin settings
 * Single view display
 * Skins
 * Time options
+
+== Upgrade Notice ==
+This version includes some new fresh images and new options

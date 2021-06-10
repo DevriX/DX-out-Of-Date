@@ -4,8 +4,8 @@
  * Description: Display a notice above each post of yours that has been published a while ago and may be outdated.
  * Author: nofearinc
  * Text Domain: dx-out-of-date
- * Author URI: http://devwp.eu/
- * Version: 0.3
+ * Author URI: https://devrix.com/
+ * Version: 1.0
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
