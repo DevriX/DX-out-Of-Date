@@ -73,7 +73,10 @@ class DX_Out_Of_Date {
 	 */
 	public function top_content_filter_callback( $content ) {
 		$box = $this->outdated_box_generator();
-		
+
+		if ( empty( $box ) ) {
+			return $content;
+		}
 		if( $box[ 1 ] == 'bottom' ) {
 			return $content . $box[ 0 ];
 		}
