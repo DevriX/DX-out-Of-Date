@@ -124,7 +124,7 @@ class DX_Out_Of_Date {
 		}
 
 		// check if the notie is disabled or emabled from post custom metabox
-		if ( is_null( $dx_ood_enable_noti ) ) {
+		if ( empty( $dx_ood_enable_noti ) ) {
 			return '';
 		}
 		

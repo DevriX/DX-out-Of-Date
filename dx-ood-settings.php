@@ -328,7 +328,7 @@ class DX_OOD_Settings {
 		?>
 			<p>
 				<label for="dx_ood_enable_noti">Show Notification if outdated?</label>
-				<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?php echo !is_null( $dx_ood_enable_noti ) ? 'checked' : ''; ?> />
+				<input type="checkbox" name="dx_ood_enable_noti" id="dx_ood_enable_noti" <?php echo !empty( $dx_ood_enable_noti ) ? 'checked' : ''; ?> />
 			</p>
 		<?php
 	}
