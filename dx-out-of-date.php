@@ -60,6 +60,8 @@ class DX_Out_Of_Date {
 		
 		if ( ! empty( $ood_setting[ 'dx_ood_enable' ] ) && is_single() ) {
 			add_filter( 'the_content', array( $this, 'top_content_filter_callback' ) );
+		} else {
+			remove_filter( 'the_content', array( $this, 'top_content_filter_callback' ) );
 		}
 	}
 	
