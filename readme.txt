@@ -2,8 +2,8 @@
 Contributors: nofearinc, devrix
 Tags: posts, out of date, outdated, label, message, box, old, posts
 Requires at least: 4.7
-Tested up to: 5.2.3
-Stable tag: 1.0
+Tested up to: 5.8
+Stable tag: 1.0.1
 Requires PHP: 7.1 or higher
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,9 @@ with his custom approach for marking tutorials as outdated.
 2. Sample view of an outdated post
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed notice when banner is not visible 
 
 = 1.0 =
 * Added new section - Enable the display of the status in post 

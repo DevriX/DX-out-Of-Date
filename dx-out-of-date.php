@@ -5,7 +5,7 @@
  * Author: nofearinc
  * Text Domain: dx-out-of-date
  * Author URI: https://devrix.com/
- * Version: 1.0
+ * Version: 1.0.1
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -73,7 +73,10 @@ class DX_Out_Of_Date {
 	 */
 	public function top_content_filter_callback( $content ) {
 		$box = $this->outdated_box_generator();
-		
+
+		if ( empty( $box ) ) {
+			return $content;
+		}
 		if( $box[ 1 ] == 'bottom' ) {
 			return $content . $box[ 0 ];
 		}
