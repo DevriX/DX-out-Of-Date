@@ -219,6 +219,17 @@ class DX_Out_Of_Date {
 			$position_column_css_ver = date( "ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . '/assets/css/position.css' ) );
 			wp_enqueue_style( 'ood-position', plugin_dir_url( __FILE__ ) . '/assets/css/position.css', array(), $position_column_css_ver );
 		}
+
+		$ood_setting = get_option( 'ood_setting', array() );
+
+		if ( $ood_setting[ 'dx_ood_custom_css' ] ) { ?>
+			<style>
+				.out-of-date {
+				    <?php echo $ood_setting[ 'dx_ood_custom_css' ]; ?>
+                }
+			</style>
+			<?php
+		}
 	}
 
 	/**

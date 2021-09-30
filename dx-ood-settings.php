@@ -105,7 +105,26 @@ class DX_OOD_Settings {
 			'dx-ood',
 			'ood_settings_section'
 		);
+
+		add_settings_field(
+			'dx_ood_custom_css',
+			__( "Add custom css rules", 'dx-out-of-date' ),
+			array( $this, 'dx_ood_custom_css_callback' ),
+			'dx-ood',
+			'ood_settings_section'
+		);
 	}
+
+	public function dx_ood_custom_css_callback() {
+		$ood_setting = get_option( 'ood_setting', array() );
+		$output ='<textarea name="ood_setting[dx_ood_custom_css]" class="dx-ood-form-control dx-ood-form-textarea">';
+		if ( isset( $ood_setting[ 'dx_ood_custom_css' ] ) ) {
+		    $output .= $ood_setting[ 'dx_ood_custom_css' ];
+        }
+		$output .= '</textarea>';
+
+		echo $output;
+    }
 	
 	public function ood_settings_callback() {
 		echo '<p>' . _e( 'Select how old a post should be in order to be marked as outdated.', 'ood' ) . '</p>';
