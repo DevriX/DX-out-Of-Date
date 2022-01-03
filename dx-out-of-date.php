@@ -78,10 +78,14 @@ class DX_Out_Of_Date {
 		if ( empty( $box ) ) {
 			return $content;
 		}
-		if ( 'bottom' === $box[1] ) {
-			return $content . $box[0];
+		if ( ! empty( $box ) ) {
+			if ( 'bottom' === $box[1] ) {
+				return $content . $box[0];
+			}
+			return $box[0] . $content;
+		} else {
+			return $content;
 		}
-		return $box[0] . $content;
 	}
 
 	/**
@@ -266,8 +270,8 @@ class DX_Out_Of_Date {
 		if ( 'ood_status' === $column_name ) {
 			$ood_setting = get_option( 'ood_setting', array() );
 			// Read the options from the admin page.
-			$duration = $ood_setting['dx_ood_duration_frame'];
-			$period   = (int) $ood_setting['dx_ood_period'];
+			$duration = ! empty( $ood_setting['dx_ood_duration_frame'] ) ? $ood_setting['dx_ood_duration_frame'] : 'years';
+			$period   = ! empty( $ood_setting['dx_ood_period'] ) ? (int) $ood_setting['dx_ood_period'] : 1;
 
 			// Calculate the interval.
 			$post_date    = DX_OOD_Helper::get_post_date();
