@@ -44,7 +44,6 @@ class DX_Out_Of_Date {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_style' ) );
 		add_filter( 'manage_posts_columns', array( $this,'render_outdated_column' ) );
 		add_action( 'manage_posts_custom_column', array( $this,'display_post_status' ), 6, 2 );
-		add_filter( 'the_content', array( $this, 'top_content_filter_callback' ) );
 
 		//register new column for the post screen
 		$ood_setting= get_option( 'ood_setting', array() );
