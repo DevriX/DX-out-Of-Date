@@ -1,10 +1,10 @@
 === DX Out of Date ===
 Contributors: nofearinc, devrix
 Tags: posts, out of date, outdated, label, message, box, old, posts
-Requires at least: 4.7
-Tested up to: 5.8
-Stable tag: 1.0.1
-Requires PHP: 7.1 or higher
+Requires at least: 5.0
+Tested up to: 6.5
+Stable tag: 2.1
+Requires PHP: 7.4 or higher
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,6 +69,30 @@ with his custom approach for marking tutorials as outdated.
 2. Sample view of an outdated post
 
 == Changelog ==
+
+= 2.1. =
+* Tested with WordPress 6.5
+* Update Requires version to 5.0
+* Update Requires PHP version to 7.4 
+
+= 2.0 =
+* Applied WPCS to all files
+* Removed unused CSS files
+* Optimized CSS delivery
+* Replaced deprecated functions
+* Added doc comments to all functions
+* Updated screenshots
+* Updated readme.md file
+* Code speed optimizations
+* Removed notification from archive views
+* Fixed wrong translation domains
+* Fixed typos
+* Made the default options make more sense
+* Improved the way we check if a post is expired
+* Added a "Settings" link for the plugin in the Plugins page
+* Added support for Block-based themes (e.g. Twenty Twenty Two)
+* Improved the "Enable Message by Default" functionality
+* Added an option to choose which post types to display the notification for
 
 = 1.0.1 =
 * Fixed notice when banner is not visible 
